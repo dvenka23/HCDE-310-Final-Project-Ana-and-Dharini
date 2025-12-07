@@ -5,6 +5,11 @@ body {
     margin: 0;
     padding: 20px;
 }
+.responsive-square {
+  width: 50%;
+  aspect-ratio: 1 / 1;
+  background-color: #2db38d;
+}
 
 h1 {
     font-size: 32px;
