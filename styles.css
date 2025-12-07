@@ -7,9 +7,12 @@ body {
 }
 
 .square {
-  width: 100px;
-  height: 100px;
-  background-color: #2db38d;
+  width: 800px;
+  height: 400px;
+  background-color: #ffffff;
+  align: center;
+  margin: 0;
+  padding: 20px;
 }
 
 h1 {
