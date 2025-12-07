@@ -10,8 +10,7 @@ body {
   width: 800px;
   height: 400px;
   background-color: #ffffff;
-  align: center;
-  margin: 0;
+  margin: 0 auto;
   padding: 20px;
 }
 
