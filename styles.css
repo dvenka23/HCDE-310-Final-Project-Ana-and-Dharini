@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, serif;
     background-color: #4ba3cc;
     color: #ffffff;
     margin: 0;
@@ -19,5 +19,5 @@ header {
 footer {
     margin-top: 50px;
     text-align: center;
-    color: #717182;
+    color: #ffffff;
 }
