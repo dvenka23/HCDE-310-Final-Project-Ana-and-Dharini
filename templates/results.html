@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Videogames for {{song}} by {{artist}}</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Game</th>
+            <th>Image</th>
+            <th>Options</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for game in videogames %}
+        <tr>
+            <td><strong>{{ game.title }}</strong></td>
+            <td><img src = "{{game.img}}" width="300px"/></td>
+            <td>
+                <ul>
+                    {% for options in game.options %}
+                    <li>
+                        $ {{ option.price }} -
+                        <a href="{{ option.url }}" target="_blank">View Game</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td> {{game.summary}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
