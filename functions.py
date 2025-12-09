@@ -44,3 +44,23 @@ def get_song_genre(title, artist, access_token):
         genre_list = ['No genre information available']
 
     return genre_list
+
+
+def get_access_token():
+    base_url = 'https://accounts.spotify.com/api/token'
+
+    data = {
+        "grant_type": "client_credentials",
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET
+    }
+
+    data_encoded = urllib.parse.urlencode(data).encode('utf-8')
+    req = urllib.request.Request(base_url, data=data_encoded, method='POST')
+    req.add_header('Content-Type', 'application/x-www-form-urlencoded')
+
+    with urllib.request.urlopen(req) as response:
+        access_token = json.loads(response.read().decode('utf-8'))['access_token']
+        return access_token
+
+
