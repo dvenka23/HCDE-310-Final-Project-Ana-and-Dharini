@@ -74,29 +74,48 @@ def get_access_token():
 
 
 def videgames(genre, RAWG_KEY):
-    videogames_list = []
+    try:
+        genre = str(genre)
+        params = {
+            "key":RAWG_KEY,
+            "genre": genre
+        }
+        videogame_url = base_url + '?' + urllib.parse.urlencode(params)
+        video_request = urllib.request.Request(videogame_url)
 
-    base_url = "https://api.rawg.io/api/games"
-    genre_list = dictionary.synonym(genre)
+        with urllib.request.urlopen(video_request) as response:
+            video_data = json.loads(response.read().decode('utf-8'))
+            
+        for game in video_data['results']:
+            videogames_list.append(game)
 
-    params = {
-        "key": RAWG_KEY,
-        "genre": genre_list,
-    }
-    videogame_url = base_url + '?' + urllib.parse.urlencode(params)
-    video_request = urllib.request.Request(videogame_url)
+        return videogames_list
+        
+    except: 
+        videogames_list = []
 
-    with urllib.request.urlopen(video_request) as response:
-        video_data = json.loads(response.read().decode('utf-8'))
+        base_url = "https://api.rawg.io/api/games"
+        genre_list = dictionary.synonym(genre)
 
-    if not video_data.get('results'):
-        print(f"Sorry, I couldn't find anything for {genre}.")
-        return None
+        params = {
+            "key": RAWG_KEY,
+            "genre": genre_list,
+        }
+        videogame_url = base_url + '?' + urllib.parse.urlencode(params)
+        video_request = urllib.request.Request(videogame_url)
 
-    for game in video_data['results']:
-        videogames_list.append(game)
+        with urllib.request.urlopen(video_request) as response:
+            video_data = json.loads(response.read().decode('utf-8'))
 
-    return videogames_list
+        if not video_data.get('results'):
+            print(f"Sorry, I couldn't find anything for {genre}.")
+            return None
+
+        for game in video_data['results']:
+            videogames_list.append(game)
+
+        return videogames_list
+
 
 
 
