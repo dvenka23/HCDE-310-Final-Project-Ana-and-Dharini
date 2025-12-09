@@ -1,6 +1,10 @@
 import urllib.request
 import urllib.parse
 import json
+from keys import CLIENT_ID, CLIENT_SECRET, RAWG_KEY
+from PyDictionary import PyDictionary
+
+dictionary = PyDictionary()
 
 def get_song_genre(title, artist, access_token):
 
@@ -45,7 +49,6 @@ def get_song_genre(title, artist, access_token):
 
     return genre_list
 
-
 def get_access_token():
     base_url = 'https://accounts.spotify.com/api/token'
 
@@ -62,36 +65,40 @@ def get_access_token():
     with urllib.request.urlopen(req) as response:
         access_token = json.loads(response.read().decode('utf-8'))['access_token']
         return access_token
-        
-def synonym():
-    genre = get_song_genre('Spotify', '', get_access_token())
-    synonyms = dictionary.synonyms(genre)
-    return synonyms
 
-def videgames(genre = None):
+
+# def synonym():
+#     genre = get_song_genre('Spotify', '', get_access_token())
+#     synonyms = dictionary.synonyms(genre)
+#     return synonyms
+
+
+def videgames(genre, RAWG_KEY):
     videogames_list = []
-    
+
     base_url = "https://api.rawg.io/api/games"
-    genre_list = synonyms(genre)
-    
+    genre_list = dictionary.synonym(genre)
+
     params = {
+        "key": RAWG_KEY,
         "genre": genre_list,
     }
     videogame_url = base_url + '?' + urllib.parse.urlencode(params)
     video_request = urllib.request.Request(videogame_url)
-    video_request.add_header('Authorization', f'Bearer {get_access_token()}')
-    
+
     with urllib.request.urlopen(video_request) as response:
         video_data = json.loads(response.read().decode('utf-8'))
-    
-    if not video_data['items']:
+
+    if not video_data.get('results'):
         print(f"Sorry, I couldn't find anything for {genre}.")
         return None
-    
-    for game in video_data['items']:
+
+    for game in video_data['results']:
         videogames_list.append(game)
-        
+
     return videogames_list
+
+
 
 
 
