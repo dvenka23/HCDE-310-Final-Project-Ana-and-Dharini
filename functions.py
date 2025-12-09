@@ -74,6 +74,7 @@ def get_access_token():
 
 
 def videgames(genre, RAWG_KEY):
+    videogames_list = []
     try:
         genre = str(genre)
         params = {
@@ -115,6 +116,7 @@ def videgames(genre, RAWG_KEY):
             videogames_list.append(game)
 
         return videogames_list
+
 
 
 
