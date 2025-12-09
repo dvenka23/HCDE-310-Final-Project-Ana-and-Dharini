@@ -45,6 +45,3 @@ def get_song_genre(title, artist, access_token):
 
     return genre_list
 
-
-result = get_song_genre('Stay', 'Zedd & Alessia Cara', "BQB3WkNbjRihPjo7r7Z4stMToulnQM74mQcrNHI1IJGvcuR-Kbx-Z392qR5bEr8Ng2qM_CtuVn4G4oqyz3-Mv-_6AgkIWafpHZwcp8jII_rI9kWxdcYvyHkZemY4RZqF6jZdRRNQhI4")
-print(result)
