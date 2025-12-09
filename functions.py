@@ -68,4 +68,30 @@ def synonym():
     synonyms = dictionary.synonyms(genre)
     return synonyms
 
+def videgames(genre = None):
+    videogames_list = []
+    
+    base_url = "https://api.rawg.io/api/games"
+    genre_list = synonyms(genre)
+    
+    params = {
+        "genre": genre_list,
+    }
+    videogame_url = base_url + '?' + urllib.parse.urlencode(params)
+    video_request = urllib.request.Request(videogame_url)
+    video_request.add_header('Authorization', f'Bearer {get_access_token()}')
+    
+    with urllib.request.urlopen(video_request) as response:
+        video_data = json.loads(response.read().decode('utf-8'))
+    
+    if not video_data['items']:
+        print(f"Sorry, I couldn't find anything for {genre}.")
+        return None
+    
+    for game in video_data['items']:
+        videogames_list.append(game)
+        
+    return videogames_list
+
+
 
