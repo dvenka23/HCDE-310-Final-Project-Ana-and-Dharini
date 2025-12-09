@@ -62,5 +62,10 @@ def get_access_token():
     with urllib.request.urlopen(req) as response:
         access_token = json.loads(response.read().decode('utf-8'))['access_token']
         return access_token
+        
+def synonym():
+    genre = get_song_genre('Spotify', '', get_access_token())
+    synonyms = dictionary.synonyms(genre)
+    return synonyms
 
 
