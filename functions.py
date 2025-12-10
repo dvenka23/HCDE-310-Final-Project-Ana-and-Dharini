@@ -91,32 +91,11 @@ def map_music_to_game(genre):
 
 def videgames(genre, RAWG_KEY):
     videogames_list = []
+    base_url = "https://api.rawg.io/api/games"
     try:
-        genre = str(genre)
         params = {
             "key": RAWG_KEY,
-            "genre": genre
-        }
-        videogame_url = base_url + '?' + urllib.parse.urlencode(params)
-        video_request = urllib.request.Request(videogame_url)
-
-        with urllib.request.urlopen(video_request) as response:
-            video_data = json.loads(response.read().decode('utf-8'))
-
-        for game in video_data['results']:
-            videogames_list.append(game)
-
-        return videogames_list
-
-    except:
-        videogames_list = []
-
-        base_url = "https://api.rawg.io/api/games"
-        genre_list = dictionary.synonym(str(genre))
-
-        params = {
-            "key": RAWG_KEY,
-            "genre": genre_list,
+            "genres": genre
         }
         videogame_url = base_url + '?' + urllib.parse.urlencode(params)
         video_request = urllib.request.Request(videogame_url)
@@ -126,34 +105,16 @@ def videgames(genre, RAWG_KEY):
 
         if not video_data.get('results'):
             print(f"Sorry, I couldn't find anything for {genre}.")
-            return None
+            return []
 
         for game in video_data['results']:
             videogames_list.append(game)
 
         return videogames_list
-  
     
-def get_game_data(title):
-    base_url = 'https://www.cheapshark.com/api/1.0/deals'
-
-    params = {"title": title}
-
-    paramstr = urllib.parse.urlencode(params)
-    game_request = base_url + '?' + paramstr
-
-    try:
-        with urllib.request.urlopen(game_request) as response:
-            game_response_str = response.read().decode()
-        game_data = json.loads(game_response_str)
-        return game_data
-    except urllib.error.HTTPError as e:
-        print("Error trying to retrieve data. Error code:", e.code)
-        return None
-    except urllib.error.URLError as e:
-        print("Error trying to retrieve data.")
-        print("Failure to reach server. Reason: ", e.reason)
-        return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return []
 
 # i have to iterate trhough each dictonary (theres one per deal) and take out the normal price the slae price and the sale id
 def get_relevant_data(game_data):
@@ -203,6 +164,7 @@ print(f"Music genres: {result}")
 # Pass only the first genre
 game_genres = map_music_to_game(result)
 print(f"Game genres: {game_genres}")
+
 
 
 
