@@ -38,8 +38,8 @@ table {
     margin: 20px 0;
 }
 
-th, td {
-    color: #4ba3cc;
+td {
+    color: #4ba3cc;  /* Your blue color */
     border: 1px solid #ddd;
     padding: 12px;
     text-align: left;
@@ -48,7 +48,7 @@ th, td {
 
 th {
     background-color: #2db38d;
-    color: black;
+    color: white;
     font-weight: bold;
 }
 
