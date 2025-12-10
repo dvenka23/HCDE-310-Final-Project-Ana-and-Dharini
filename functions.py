@@ -83,9 +83,9 @@ def map_music_to_game(genre):
 
     for key in genre_map:
         if key in genre_lower:
-            return genre_map[key]
+            return str(genre_map[key][0])
 
-    return ['adventure', 'indie']
+    return 'adventure'
 
 
 
@@ -164,6 +164,7 @@ print(f"Music genres: {result}")
 # Pass only the first genre
 game_genres = map_music_to_game(result)
 print(f"Game genres: {game_genres}")
+
 
 
 
