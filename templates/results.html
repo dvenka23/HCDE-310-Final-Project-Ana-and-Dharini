@@ -1,35 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Videogames for {{song}} by {{artist}}</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Game</th>
-            <th>Image</th>
-            <th>Options</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for game in videogames %}
-        <tr>
-            <td><strong>{{ game.title }}</strong></td>
-            <td><img src = "{{game.img}}" width="300px"/></td>
-            <td>
-                <ul>
-                    {% for options in game.options %}
-                    <li>
-                        $ {{ option.price }} -
-                        <a href="{{ option.url }}" target="_blank">View Game</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </td>
-            <td> {{game.summary}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% if error %}
+    <h2>{{ error }}</h2>
+    <a href="/">Try Again</a>
+{% else %}
+    <h1>Videogames for "{{song}}" by {{artist}}</h1>
+    <p><strong>Music Genre:</strong> {{ music_genre }}</p>
+    <p><strong>Game Genre:</strong> {{ game_genre }}</p>
 
+    <table>
+        <thead>
+            <tr>
+                <th>Game</th>
+                <th>Image</th>
+                <th>Rating</th>
+                <th>Released</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in videogames %}
+            <tr>
+                <td><strong>{{ game.name }}</strong></td>
+                <td><img src="{{ game.background_image }}" width="300px"/></td>
+                <td>{{ game.rating }}</td>
+                <td>{{ game.released }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Game Deals:</h2>
+    {% if deals %}
+        <ul>
+        {% for deal in deals %}
+            <li>
+                {{ deal.Title }}: ${{ deal['Sale Price'] }}
+                (was ${{ deal['Normal Price'] }})
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No deals found for these games.</p>
+    {% endif %}
+
+    <br>
+    <a href="/">Search Another Song</a>
+{% endif %}
 {% endblock %}
