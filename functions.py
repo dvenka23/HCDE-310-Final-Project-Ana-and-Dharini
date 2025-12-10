@@ -95,7 +95,8 @@ def videgames(genre, RAWG_KEY):
     try:
         params = {
             "key": RAWG_KEY,
-            "genres": genre
+            "genres": genre,
+            "page_size": 20,
         }
         videogame_url = base_url + '?' + urllib.parse.urlencode(params)
         video_request = urllib.request.Request(videogame_url)
@@ -164,6 +165,7 @@ print(f"Music genres: {result}")
 # Pass only the first genre
 game_genres = map_music_to_game(result)
 print(f"Game genres: {game_genres}")
+
 
 
 
