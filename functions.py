@@ -111,7 +111,7 @@ def videgames(genre, RAWG_KEY):
         for game in video_data['results']:
             videogames_list.append(game)
 
-        return videogames_list
+        return videogames_list[:10]
     
     except Exception as e:
         print(f"Error: {e}")
@@ -165,6 +165,7 @@ print(f"Music genres: {result}")
 # Pass only the first genre
 game_genres = map_music_to_game(result)
 print(f"Game genres: {game_genres}")
+
 
 
 
