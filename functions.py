@@ -41,7 +41,7 @@ def get_song_genre(title, artist, access_token):
     if genre:
         genre = genre[0]
     else:
-        genre = ['No genre information available']
+        genre = 'No genre information available'
 
     return genre
 
@@ -164,6 +164,7 @@ print(f"Music genres: {result}")
 # Pass only the first genre
 game_genres = map_music_to_game(result)
 print(f"Game genres: {game_genres}")
+
 
 
 
