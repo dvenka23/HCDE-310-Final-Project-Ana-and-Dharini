@@ -147,38 +147,6 @@ def get_relevant_data(game_data):
     return relevant_data
 
 
-access_token = get_access_token()
-result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
-videgames(result, RAWG_KEY)
-print(result)
-
-map_music_to_game(result)
-
-access_token = get_access_token()
-result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
-print(f"Music genres: {result}")
-
-game_genres = map_music_to_game(result)
-print(f"Game genres: {game_genres}")
-
-videogames = videgames(game_genres, RAWG_KEY)
-for game in videogames:
-    print(game['name'])
-
-
-games = [game['name'] for game in videogames]
-all_data = []
-
-for game_title in games:
-    data = get_game_data(game_title)
-    if data:
-        relevant_data = get_relevant_data(data)
-        all_data.extend(relevant_data)
-
-print(f"\nFound {len(all_data)} total deals:\n")
-for deal in all_data:
-    print(f"- {deal['Title']}: ${deal['Sale Price']} (was ${deal['Normal Price']})")
-
 
 
 
