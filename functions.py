@@ -2,12 +2,9 @@ import urllib.request
 import urllib.parse
 import json
 from keys import CLIENT_ID, CLIENT_SECRET, RAWG_KEY
-from PyDictionary import PyDictionary
 
-dictionary = PyDictionary()
 
 def get_song_genre(title, artist, access_token):
-
     base_url = 'https://api.spotify.com/v1/search'
 
     params = {
@@ -43,11 +40,12 @@ def get_song_genre(title, artist, access_token):
     genre = artist_data['genres']
 
     if genre:
-        genre_list = genre
+        genre = genre[0]
     else:
-        genre_list = ['No genre information available']
+        genre = ['No genre information available']
 
-    return genre_list
+    return genre
+
 
 def get_access_token():
     base_url = 'https://accounts.spotify.com/api/token'
@@ -67,10 +65,29 @@ def get_access_token():
         return access_token
 
 
-# def synonym():
-#     genre = get_song_genre('Spotify', '', get_access_token())
-#     synonyms = dictionary.synonyms(genre)
-#     return synonyms
+def map_music_to_game(genre):
+    genre_map = {
+        'pop': ['casual', 'simulation', 'family'],
+        'rock': ['action', 'shooter', 'racing'],
+        'metal': ['action', 'shooter', 'fighting'],
+        'edm': ['arcade', 'racing', 'sports'],
+        'electronic': ['arcade', 'puzzle', 'platformer'],
+        'hip hop': ['action', 'sports', 'racing'],
+        'classical': ['strategy', 'puzzle', 'adventure'],
+        'jazz': ['puzzle', 'casual', 'indie'],
+        'indie': ['indie', 'adventure', 'platformer'],
+        'country': ['adventure', 'simulation', 'casual'],
+        'r&b': ['casual', 'adventure', 'simulation'],
+    }
+
+    genre_lower = genre.lower()
+
+    for key in genre_map:
+        if key in genre_lower:
+            return genre_map[key]
+
+    return ['adventure', 'indie']
+
 
 
 def videgames(genre, RAWG_KEY):
@@ -78,7 +95,7 @@ def videgames(genre, RAWG_KEY):
     try:
         genre = str(genre)
         params = {
-            "key":RAWG_KEY,
+            "key": RAWG_KEY,
             "genre": genre
         }
         videogame_url = base_url + '?' + urllib.parse.urlencode(params)
@@ -86,17 +103,17 @@ def videgames(genre, RAWG_KEY):
 
         with urllib.request.urlopen(video_request) as response:
             video_data = json.loads(response.read().decode('utf-8'))
-            
+
         for game in video_data['results']:
             videogames_list.append(game)
 
         return videogames_list
-        
-    except: 
+
+    except:
         videogames_list = []
 
         base_url = "https://api.rawg.io/api/games"
-        genre_list = dictionary.synonym(genre)
+        genre_list = dictionary.synonym(str(genre))
 
         params = {
             "key": RAWG_KEY,
@@ -116,6 +133,22 @@ def videgames(genre, RAWG_KEY):
             videogames_list.append(game)
 
         return videogames_list
+
+# access_token = get_access_token()
+# result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
+# videgames(result, RAWG_KEY)
+# print(result)
+#
+# map_music_to_game(result)
+
+access_token = get_access_token()
+result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
+print(f"Music genres: {result}")
+
+# Pass only the first genre
+game_genres = map_music_to_game(result[0])  # ← Add [0] here
+print(f"Game genres: {game_genres}")
+
 
 
 
