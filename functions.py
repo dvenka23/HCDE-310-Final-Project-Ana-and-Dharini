@@ -27,7 +27,6 @@ def get_song_genre(title, artist, access_token):
 
     track = search_data['tracks']['items'][0]
     artist_id = track['artists'][0]['id']
-    artist_name = track['artists'][0]['name']
 
     artist_url = f'https://api.spotify.com/v1/artists/{artist_id}'
 
@@ -80,7 +79,7 @@ def map_music_to_game(genre):
         'r&b': ['casual', 'adventure', 'simulation'],
     }
 
-    genre_lower = genre.lower()
+    genre_lower = genre.strip().lower()
 
     for key in genre_map:
         if key in genre_lower:
@@ -146,8 +145,9 @@ result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
 print(f"Music genres: {result}")
 
 # Pass only the first genre
-game_genres = map_music_to_game(result[0])  # ← Add [0] here
+game_genres = map_music_to_game(result) 
 print(f"Game genres: {game_genres}")
+
 
 
 
