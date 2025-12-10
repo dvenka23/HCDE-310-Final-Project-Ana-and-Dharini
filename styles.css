@@ -39,6 +39,7 @@ table {
 }
 
 th, td {
+    color: #4ba3cc;
     border: 1px solid #ddd;
     padding: 12px;
     text-align: left;
@@ -47,7 +48,7 @@ th, td {
 
 th {
     background-color: #2db38d;
-    color: white;
+    color: black;
     font-weight: bold;
 }
 
