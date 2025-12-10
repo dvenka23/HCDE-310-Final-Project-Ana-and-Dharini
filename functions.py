@@ -147,19 +147,6 @@ def get_relevant_data(game_data):
     return relevant_data
 
 
-def display_game_data(relevant_data):
-    with open("game_deals.html", "w") as f:
-        f.write("<html><body>\n")
-        f.write("<h1>Game Deals</h1>\n")
-        for deal in relevant_data:
-            f.write(f"<p>Title: {deal['Title']}</p>\n")
-            f.write(f"<p>Normal Price: ${deal['Normal Price']}</p>\n")
-            f.write(f"<p>Sale Price: ${deal['Sale Price']}</p>\n")
-            f.write(f"<p>Deal ID: {deal['Deal ID']}</p>\n")
-            f.write("<hr>\n")
-
-        f.write("</body></html>\n")
-
 access_token = get_access_token()
 result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
 videgames(result, RAWG_KEY)
@@ -188,7 +175,10 @@ for game_title in games:
         relevant_data = get_relevant_data(data)
         all_data.extend(relevant_data)
 
-display_game_data(all_data)
+print(f"\nFound {len(all_data)} total deals:\n")
+for deal in all_data:
+    print(f"- {deal['Title']}: ${deal['Sale Price']} (was ${deal['Normal Price']})")
+
 
 
 
