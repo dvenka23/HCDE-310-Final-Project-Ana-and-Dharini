@@ -88,7 +88,6 @@ def map_music_to_game(genre):
     return 'adventure'
 
 
-
 def videgames(genre, RAWG_KEY):
     videogames_list = []
     base_url = "https://api.rawg.io/api/games"
@@ -112,20 +111,41 @@ def videgames(genre, RAWG_KEY):
             videogames_list.append(game)
 
         return videogames_list[:10]
-    
+
     except Exception as e:
         print(f"Error: {e}")
         return []
 
-# i have to iterate trhough each dictonary (theres one per deal) and take out the normal price the slae price and the sale id
+def get_game_data(title):
+    base_url = 'https://www.cheapshark.com/api/1.0/deals'
+
+    params = {"title": title}
+
+    paramstr = urllib.parse.urlencode(params)
+    game_request = base_url + '?' + paramstr
+
+    try:
+        with urllib.request.urlopen(game_request) as response:
+            game_response_str = response.read().decode()
+        game_data = json.loads(game_response_str)
+        return game_data
+    except urllib.error.HTTPError as e:
+        print("Error trying to retrieve data. Error code:", e.code)
+        return None
+    except urllib.error.URLError as e:
+        print("Error trying to retrieve data.")
+        print("Failure to reach server. Reason: ", e.reason)
+        return None
+
 def get_relevant_data(game_data):
     relevant_data = []
     for deal in game_data:
-        data = {'Title': deal['title'], 'Normal Price' : deal['normalPrice'], 'Sale Price' : deal['salePrice'],
-                'Deal ID' : deal['dealID']}
+        data = {'Title': deal['title'], 'Normal Price': deal['normalPrice'], 'Sale Price': deal['salePrice'],
+                'Deal ID': deal['dealID']}
         relevant_data.append(data)
 
     return relevant_data
+
 
 def display_game_data(relevant_data):
     with open("game_deals.html", "w") as f:
@@ -140,7 +160,26 @@ def display_game_data(relevant_data):
 
         f.write("</body></html>\n")
 
-games = ["The Last of US", "Minecraft", "Red Dead Redemption"]
+access_token = get_access_token()
+result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
+videgames(result, RAWG_KEY)
+print(result)
+
+map_music_to_game(result)
+
+access_token = get_access_token()
+result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
+print(f"Music genres: {result}")
+
+game_genres = map_music_to_game(result)
+print(f"Game genres: {game_genres}")
+
+videogames = videgames(game_genres, RAWG_KEY)
+for game in videogames:
+    print(game['name'])
+
+
+games = [game['name'] for game in videogames]
 all_data = []
 
 for game_title in games:
@@ -151,20 +190,6 @@ for game_title in games:
 
 display_game_data(all_data)
 
-# access_token = get_access_token()
-# result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
-# videgames(result, RAWG_KEY)
-# print(result)
-#
-# map_music_to_game(result)
-
-access_token = get_access_token()
-result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
-print(f"Music genres: {result}")
-
-# Pass only the first genre
-game_genres = map_music_to_game(result)
-print(f"Game genres: {game_genres}")
 
 
 
