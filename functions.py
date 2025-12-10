@@ -132,6 +132,62 @@ def videgames(genre, RAWG_KEY):
             videogames_list.append(game)
 
         return videogames_list
+  
+    
+def get_game_data(title):
+    base_url = 'https://www.cheapshark.com/api/1.0/deals'
+
+    params = {"title": title}
+
+    paramstr = urllib.parse.urlencode(params)
+    game_request = base_url + '?' + paramstr
+
+    try:
+        with urllib.request.urlopen(game_request) as response:
+            game_response_str = response.read().decode()
+        game_data = json.loads(game_response_str)
+        return game_data
+    except urllib.error.HTTPError as e:
+        print("Error trying to retrieve data. Error code:", e.code)
+        return None
+    except urllib.error.URLError as e:
+        print("Error trying to retrieve data.")
+        print("Failure to reach server. Reason: ", e.reason)
+        return None
+
+# i have to iterate trhough each dictonary (theres one per deal) and take out the normal price the slae price and the sale id
+def get_relevant_data(game_data):
+    relevant_data = []
+    for deal in game_data:
+        data = {'Title': deal['title'], 'Normal Price' : deal['normalPrice'], 'Sale Price' : deal['salePrice'],
+                'Deal ID' : deal['dealID']}
+        relevant_data.append(data)
+
+    return relevant_data
+
+def display_game_data(relevant_data):
+    with open("game_deals.html", "w") as f:
+        f.write("<html><body>\n")
+        f.write("<h1>Game Deals</h1>\n")
+        for deal in relevant_data:
+            f.write(f"<p>Title: {deal['Title']}</p>\n")
+            f.write(f"<p>Normal Price: ${deal['Normal Price']}</p>\n")
+            f.write(f"<p>Sale Price: ${deal['Sale Price']}</p>\n")
+            f.write(f"<p>Deal ID: {deal['Deal ID']}</p>\n")
+            f.write("<hr>\n")
+
+        f.write("</body></html>\n")
+
+games = ["The Last of US", "Minecraft", "Red Dead Redemption"]
+all_data = []
+
+for game_title in games:
+    data = get_game_data(game_title)
+    if data:
+        relevant_data = get_relevant_data(data)
+        all_data.extend(relevant_data)
+
+display_game_data(all_data)
 
 # access_token = get_access_token()
 # result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
@@ -145,8 +201,9 @@ result = get_song_genre('Last Christmas', 'Ariana Grande', access_token)
 print(f"Music genres: {result}")
 
 # Pass only the first genre
-game_genres = map_music_to_game(result) 
+game_genres = map_music_to_game(result)
 print(f"Game genres: {game_genres}")
+
 
 
 
