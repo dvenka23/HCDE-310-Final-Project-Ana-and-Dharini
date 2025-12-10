@@ -19,11 +19,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for game in videogames %}
+            {% for game in games %}
             <tr>
                 <td><strong>{{ game.name }}</strong></td>
                 <td><img src="{{ game.background_image }}" width="300px"/></td>
-                <td>{{ game.rating }}</td>
+                <td>{{ game.rating }}/5</td>
                 <td>{{ game.released }}</td>
             </tr>
             {% endfor %}
