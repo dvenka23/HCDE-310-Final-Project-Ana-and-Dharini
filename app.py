@@ -38,5 +38,5 @@ def results():
                            artist=artist,
                            music_genre=music_genre,
                            game_genre=game_genre,
-                           games=games,
+                           videogames=videogames,
                            deals=all_data)
